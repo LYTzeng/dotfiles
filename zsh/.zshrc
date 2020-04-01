@@ -16,7 +16,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git zsh-autosuggestions node)
+plugins=(git zsh-autosuggestions node kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -25,8 +25,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Powerlevel9k settings supported by p10k
 POWERLEVEL9K_VCS_GIT_ICON=$''
+POWERLEVEL9K_CUSTOM_KUBE_PS1='kube_ps1'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs battery time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_kube_ps1 status root_indicator background_jobs battery time)
 
 # NVM initialization
 export NVM_DIR="$HOME/.nvm"
@@ -34,7 +35,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Pyenv initialization
-echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+eval "$(pyenv init -)"
+
+# Golang
+export GOPATH="${HOME}/.go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+test -d "${GOPATH}" || mkdir "${GOPATH}"
+test -d "${GOPATH}/src/github.com" || mkdir -p "${GOPATH}/src/github.com"
